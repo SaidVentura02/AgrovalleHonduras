@@ -7,14 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class Insumo extends Model
 {
     protected $fillable = [
+        'sku',
         'nombre',
         'categoria',
         'precio',
         'inventario',
         'imagen',
         'fabricante',
-        'vencimiento',
-        'registro',
+        'fecha_vencimiento',
+        'fecha_registro',
         'lote',
     ];
 }

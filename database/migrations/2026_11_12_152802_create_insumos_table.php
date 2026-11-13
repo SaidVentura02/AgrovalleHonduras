@@ -15,13 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('sku')->unique();
             $table->string('nombre');
-            $table->integer('categoria');
+            $table->string('categoria');
             $table->decimal('precio',10,2);
             $table->integer('inventario');
             $table->string('imagen')->nullable();
             $table->string('fabricante');
-            $table->string('vencimiento');
-            $table->string('registro');
+            $table->date('fecha_vencimiento');
+            $table->date('fecha_registro');
             $table->string('lote');
             $table->timestamps();
         });

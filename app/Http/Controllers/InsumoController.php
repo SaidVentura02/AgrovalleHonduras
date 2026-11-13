@@ -7,59 +7,77 @@ use Illuminate\Http\Request;
 
 class InsumoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    
     public function index()
     {
-        //
+        $insumos = Insumo::latest()->paginate(15);
+        return view('insumos.index', compact('insumo'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    
     public function create()
     {
-        //
+        return view('insumos.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'sku' => 'required|unique:app/Models/Insumo,dni',
+            'nombre' => 'required|max:255|string',
+            'categoria' => 'required|max:255|string',
+            'precio' => 'required|numeric|gt:0',
+            'inventario' => 'required|integer|gte:0',
+            'imagen' => 'string|nullable',
+            'fabricante' => 'required|max:255|string',
+            'fecha_vencimiento' => 'date',
+            'fecha_registro' => 'date',
+            'lote' => 'required|string'
+        ]);
+
+        Insumo::create($request->all());
+
+        return redirect()->route('insumos.index')->with('success', 'El producto ha sido agregado exitosamente.');
     }
 
-    /**
-     * Display the specified resource.
-     */
+    
     public function show(Insumo $insumo)
     {
-        //
+        return redirect()->route('insumos.edit', $insumo);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    
     public function edit(Insumo $insumo)
     {
-        //
+        return view('insumos.edit', compact('insumo'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    
     public function update(Request $request, Insumo $insumo)
     {
-        //
+        $request->validate([
+            'sku' => 'required|unique:app/Models/Insumo,dni',
+            'nombre' => 'required|max:255|string',
+            'categoria' => 'required|max:255|string',
+            'precio' => 'required|numeric|gt:0',
+            'inventario' => 'required|integer|gte:0',
+            'imagen' => 'string|nullable',
+            'fabricante' => 'required|max:255|string',
+            'fecha_vencimiento' => 'date',
+            'fecha_registro' => 'date',
+            'lote' => 'required|string'
+        ]);
+
+        $insumo->update($request->all());
+
+        return redirect()->route('insumos.index')->with('success', 'El producto se ha actualizado exitosamente.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    
     public function destroy(Insumo $insumo)
     {
-        //
+        $insumo->delete();
+        return redirect()->route('insumos.index')->with('success', 'Se ha retirado el producto del inventario.');
     }
 }
